@@ -3,6 +3,7 @@
     - [Debian package](#debian-package)
     - [From the sources](#from-the-sources)
     - [Using PyPI](#using-pypi)
+    - [Updating Leaf](#updating-leaf)
   - [Common CLI arguments](#common-cli-arguments)
 - [Remotes](#remotes)
   - [Adding/removing remotes](#addingremoving-remotes)
@@ -88,6 +89,17 @@ $ sudo pip3 install swi-leaf
 
 > Leaf is not published on PyPI for now, the `swi-leaf` package does not exist yet!
 
+### Updating Leaf
+
+In installed from the deb package, Swi apt repository is automatically added in `/etc/apt/sources.list.d/`
+
+```sh
+$ sudo apt update
+$ sudo apt full-upgrade
+# Or update only leaf ... not recommended
+$ sudo apt install --only-upgrade leaf
+```
+
 ## Common CLI arguments
 
 Every leaf command has `--verbose` and `--quiet` to set the verbosity.
@@ -161,6 +173,7 @@ $ leaf remote add --insecure my-remote https://server.tld/index.json
 $ leaf remote remote my-remote
 ```
 
+> In the next version (v2.2), `--insecure` won't be mandatory anymore
 
 ## Enabling/disabling remotes 
 
