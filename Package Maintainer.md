@@ -231,7 +231,7 @@ Example below.
     "plugins": {
         "myplugin": {
             "source": "myplugin.py",
-            "description": "some usefull extension for leaf"
+            "description": "some useful extension for leaf"
         }
     }
 }
@@ -802,7 +802,7 @@ examples:
   Build an XZ compressed archive with some files excluded (from /tmp/exclude.list), tar will be verbose
     $ leaf build pack -i path/to/packageFolder/ -o package.leaf -- -v -J -X /tmp/exclude.list .
   Build an XZ compressed archive containing only the manifest.json file
-    $ leaf build pack -i path/to/packageFolder/ -o package.leaf -- manifest.json
+    $ leaf build pack -i path/to/packageFolder/ -o package.leaf -- -J manifest.json
 ```
 
 ```sh

@@ -18,6 +18,7 @@
   - [Settings](#settings)
   - [Help](#help)
   - [Plugins](#plugins)
+  - [Basic operation](#basic-operation)
 - [Workspace](#workspace)
   - [Structure](#structure)
   - [Environment](#environment)
@@ -165,6 +166,8 @@ Many protocoles are supported:
 - Local filesystem: `file:///tmp/index.json` or `/tmp/index.json`
 - Any protocole supported by `python3-request` library
 
+Remotes are automatically fetched after the cached index file is older than 1 day.
+This timeout is configurable with the setting: `leaf.remote.smartrefresh`
 
 ## Adding/removing remotes
 
@@ -309,11 +312,20 @@ Default format is `man` if available, you can change this with the setting `leaf
 
 Some leaf subcommands, like `leaf setup` are not part of leaf itself, but are *plugins*.
 
-Note: Leaf plugins must be implemented in Python3 
+> Note: Leaf plugins must be implemented in Python3 and extend `LeafPluginCommand`
+
+## Basic operation
+
+You can install and uninstall packages with
+```sh
+$ leaf package install PACKAGE_IDENTIFIER PACKAGE_IDENTIFIER ...
+$ leaf package uninstall PACKAGE_IDENTIFIER PACKAGE_IDENTIFIER ...
+```
+
+> Note: When you uninstall a package, all its dependencies are uninstalled unles they are used by another installed package
 
 
 # Workspace
-
 
 ## Structure
 
@@ -391,7 +403,7 @@ A workspace can contains many profiles, each profile is identifier by its name.
 > Note: Profile are usually named with CAPITAL LETTERS like `SWI-WP77`
 
 A profile contains:
-- a list pof packages
+- a list of packages
 - a list of environment variables
 
 Every profile has a folder in the `leaf-data/` folder where leaf maintains symbolic links to the packages used by the profile.
@@ -612,7 +624,7 @@ Note: The strategy leaf uses to resolve package dependencies allow package overr
 
 ## Autocompletion
 
-If installed using the `leaf.deb` package, autocompletion should be automatically enabled for `bash`and `zsh`.
+If installed using the `leaf.deb` package, autocompletion should be automatically enabled for `bash` and `zsh`.
 
 To enable autocompletion
 - for *bash*, use `eval "$(leaf completion -s bash)"`
@@ -673,7 +685,7 @@ There is no settings to set the *configuration folder* of leaf (because this fol
 To override the configuration folder, use
 ```sh
 $ export LEAF_CONFIG=~/cutom_leaf_config_folder/
-$ leaf_config/ leaf config
+$ leaf config
 ┌──────────────────────────────────────────────────────────┐
 │ Configuration folder: /home/seb/cutom_leaf_config_folder │
 └──────────────────────────────────────────────────────────┘
@@ -698,6 +710,24 @@ One feature of `leaf setup` if to resolve the version automatically, you can sim
 
 This is an interactive command which propose to update the current profile to use the latest version available of every packages included in the profile.
 
+```sg
+$ leaf status           
+┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 Workspace: /home/seb/workspace                                 │
+╞════════════════════════════════════════════════════════════════════════════════════════════════╡
+│                             Profile: SWI-WP76 [current] (not sync)                             │
+├──────────┬─────────────────────────────────────────────┬───────────────────────────────────────┤
+│ Packages │                  Identifier                 │              Description              │
+├──────────┼─────────────────────────────────────────────┼───────────────────────────────────────┤
+│ Included │ swi-wp76_1.4.2                              │                                       │
+│          │ wp76-toolchain_SWI9X07Y_02.28.03.05-linux64 │ GCC cross compiler Toolchain for WP76 │
+└──────────┴─────────────────────────────────────────────┴───────────────────────────────────────┘
+Other profile: PROFILE1
+$ leaf update
+Fetching remote legato-stable
+Do you want to update package swi-wp76 from 1.4.2 to 4.0.3? (Y/n)
+...
+```
 
 ## Keyword *latest*
 
